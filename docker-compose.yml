@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  db:
+    # Este nombre lo elegimos nosotros
+    container_name: mean-db
+    # La imagen pueden ser repositorios privados o públicos, 
+    # en este caso utilizaremos la de mongo y especificamos la versión
+    image: mongo:5.0.16
+    # Yo quiero que mi base de datos sea persistente en mi local
+    volumes:
+      - ./mongo:/data/db
+    # Por defecto, las imagenes se montan en lo que llamamos contenedor.
+    # El contenedor podríamos verlo como una máquina virtual hermética
+    # en la cual nada sale y nada entra.
+    # Pero nosotros tenemos que comunicarnos y para ello usamos los puertos
+    ports:
+      # Con esto le estamos diciendo que mapee mi puerto 27017 
+      # con el puerto 27017 del contenedor
+      # Y este es el único medio de comunicación que vamos a tener con el contenedor
+      - 27017:27017
+    # Esto sirve para que, cada vez que reiniciemos la base de datos o docker desktop,
+    # automáticamente la base de datos esté arriba
+    restart: always
