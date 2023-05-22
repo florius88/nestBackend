@@ -5,6 +5,9 @@
 # base de datos
 mongo/
 
+# variables de entorno
+.env
+
 # Logs
 logs
 *.log
