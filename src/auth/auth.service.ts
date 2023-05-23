@@ -1,6 +1,7 @@
 import { BadGatewayException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 import * as bcryptjs from 'bcryptjs'
 
@@ -8,6 +9,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './entities/user.entity';
+import { JwtPayload } from './interfaces/jwt-payload';
 
 
 @Injectable()
@@ -18,7 +20,8 @@ export class AuthService {
    */
   constructor(
     /* @InjectModel(User.name, 'users') private userModel: Model<User> */
-    @InjectModel(User.name) private userModel: Model<User>
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
   ) { }
 
   /**
@@ -91,8 +94,19 @@ export class AuthService {
     // Devolvemos el usuario sin password y el token de acceso
     return {
       user: rest,
-      token: 'ABC-123'
+      token: this.getJwtToken({ id: user.id, }),
     }
+  }
+
+  /**
+   * Generamos un JWT a partir de un payload
+   * 
+   * @param payload 
+   * @returns un string con el token
+   */
+  getJwtToken(payload: JwtPayload) {
+    const token = this.jwtService.sign(payload)
+    return token
   }
 
   /**
