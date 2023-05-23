@@ -47,7 +47,7 @@ export class AuthService {
       // fuera del método y no poder controlado
       await newUser.save()
 
-      // No queremos que la password viaje junto al usuario
+      // No queremos que la password se muestre en el json junto al usuario
       const {password:_, ...returnUser} = newUser.toJSON() 
 
       return returnUser
