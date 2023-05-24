@@ -5,11 +5,12 @@ import { JwtService } from '@nestjs/jwt';
 
 import * as bcryptjs from 'bcryptjs'
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { LoginDto } from './dto/login.dto';
+import { CreateUserDto, LoginDto, RegisterUserDto, UpdateAuthDto } from './dto';
+
 import { User } from './entities/user.entity';
+
 import { JwtPayload } from './interfaces/jwt-payload';
+import { LoginResponse } from './interfaces/login-response';
 
 
 @Injectable()
@@ -67,12 +68,31 @@ export class AuthService {
   }
 
   /**
+   * Para registrar un usuario y hacer login
+   * 
+   * @returns una promesa 
+   */
+  async register(registerDto: RegisterUserDto): Promise<LoginResponse> {
+
+    /* Puesto que los dtos son los mismos que el createUserDto, nos acepta lo siguiente
+    si este no fuera el caso, tendríamos que mandarlo desestructurado
+    const user = await this.create({email: registerDto.email, name: registerDto.name, password: registerDto.password}) */
+    const user = await this.create(registerDto)
+
+    return {
+      user: user,
+      token: this.getJwtToken({ id: user._id, }),
+    }
+
+  }
+
+  /**
    * Para el login 
    * 
    * @param loginDto 
    * @returns
    */
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto): Promise<LoginResponse> {
 
     const { email, password } = loginDto
 

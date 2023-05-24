@@ -3,8 +3,8 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema()
 export class User {
-    /* Mongo va a crear automáticamente el atributo
-    _id: string; */
+    /* Mongo va a crear automáticamente el atributo */
+    _id?: string;
 
     @Prop({ unique: true, required: true })
     email: string;
