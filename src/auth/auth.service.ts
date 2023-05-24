@@ -130,11 +130,12 @@ export class AuthService {
   }
 
   /**
+   * Devuelve todos los registros de bbdd
    * 
-   * @returns 
+   * @returns una promesa con un array de usuarios
    */
-  findAll() {
-    return `This action returns all auth`;
+  findAll(): Promise<User[]> {
+    return this.userModel.find()
   }
 
   /**
