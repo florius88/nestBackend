@@ -148,6 +148,17 @@ export class AuthService {
   }
 
   /**
+   * Devolvemos el usuario sin el password
+   * 
+   * @param id 
+   */
+  async findUserById(id: string) {
+    const user = await this.userModel.findById(id)
+    const { password, ...rest } = user.toJSON()
+    return rest
+  }
+
+  /**
    * 
    * @param id 
    * @param updateAuthDto 
